@@ -27,14 +27,14 @@ To add a privacy policy for a new app:
 
 ## Hosting on GitHub Pages
 
-1. Create a repository named `tindrels.github.io` (or use a custom domain setup)
+1. Create a repository named `tindrelsllc.github.io` (or use a custom domain setup)
 2. Push this code to the main/master branch
 3. Go to repository Settings → Pages
 4. Set source to deploy from main/master branch
 5. For custom domain (tindrels.com):
    - Add a `CNAME` file with content: `tindrels.com`
    - Configure DNS with your domain registrar:
-     - Add CNAME record: `www` → `tindrels.github.io`
+     - Add CNAME record: `www` → `tindrelsllc.github.io`
      - Add A records for apex domain pointing to GitHub's IPs:
        - `185.199.108.153`
        - `185.199.109.153`

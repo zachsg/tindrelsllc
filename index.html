@@ -4,56 +4,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tindrels - Innovative mobile applications">
-    <title>Tindrels - App Development</title>
+    <meta name="description" content="Tindrels - intentional software">
+    <title>Tindrels</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/svg+xml" href="icons/sprout.svg">
 </head>
 
 <body>
     <header>
         <nav class="navbar">
-            <div class="container">
+            <div class="container nav-inner">
                 <div class="logo">
                     <h1>Tindrels</h1>
                 </div>
+                <a class="nav-pill" href="mailto:team@tindrels.com">Get in touch</a>
             </div>
         </nav>
     </header>
 
     <main>
         <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h2>Building Apps That Matter</h2>
-                    <p class="subtitle">We create mobile applications that improve your everyday.</p>
+            <div class="container hero-grid">
+                <div>
+                    <span class="eyebrow">Tools for humans</span>
+                    <h2>Spend time in the real world.</h2>
+                    <p>We focus on quiet, everyday experiences that keep people present in real life. Clean interfaces,
+                        purposeful details, minimal noise.</p>
+                    <div class="hero-actions">
+                        <a class="button-primary" href="https://apps.apple.com/us/app/osilate/id6745056964"
+                            target="_blank" rel="noreferrer">Get Osilate</a>
+                        <a class="button-ghost" href="mailto:team@tindrels.com">Talk to us</a>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <span>Now shipping</span>
+                    <h3>Osilate</h3>
+                    <p>A social step-counting companion that keeps your close circles moving.</p>
+                    <ul class="hero-card-list">
+                        <li>Stepping made fun</li>
+                        <li>Private teams</li>
+                        <li>Gamified play</li>
+                        <li>Simple, intuitive design</li>
+                    </ul>
                 </div>
             </div>
         </section>
 
         <section class="apps">
             <div class="container">
-                <h3>Our Apps</h3>
+                <div class="section-heading">
+                    <h3>Current lineup</h3>
+                    <p>Purpose-built tools for time outside.</p>
+                </div>
                 <div class="apps-grid">
-                    <div class="app-card">
-                        <div class="app-icon">☀️</div>
-                        <h4>Sunned</h4>
-                        <p>Track your sun exposure and stay safe in the sun</p>
-                        <div class="app-links">
-                            <a href="https://apps.apple.com/us/app/sunned/id6741027703" target="_blank"
-                                class="app-store-link">
-                                Download on the App Store
-                            </a>
-                            <a href="privacy/sunned.html" class="privacy-link">Privacy Policy</a>
+                    <article class="app-card">
+                        <div class="app-icon" aria-hidden="true">
+                            <i data-lucide="sun"></i>
                         </div>
-                    </div>
-                    <div class="app-card">
-                        <div class="app-icon">👣</div>
-                        <h4>Osilate</h4>
-                        <p>Step-counting with friends</p>
-                        <div class="app-links">
-                            <span class="coming-soon-badge">Coming Soon</span>
+                        <div>
+                            <h4>Sunned</h4>
+                            <p>Track UV and your vitamin D. Get serum estimates and sun safely with "time to burn"
+                                notifications.</p>
                         </div>
-                    </div>
+                        <div class="app-links">
+                            <a href="https://apps.apple.com/us/app/sunned/id6741027703" target="_blank" rel="noreferrer"
+                                class="app-store-link">Download on the App Store</a>
+                            <a href="privacy/sunned.html" class="privacy-link">View privacy policy</a>
+                        </div>
+                    </article>
+                    <article class="app-card">
+                        <div class="app-icon" aria-hidden="true">
+                            <i data-lucide="footprints"></i>
+                        </div>
+                        <div>
+                            <h4>Osilate</h4>
+                            <p>A social step-counting companion that keeps your close circles moving.</p>
+                        </div>
+                        <div class="app-links">
+                            <a href="https://apps.apple.com/us/app/osilate/id6745056964" target="_blank"
+                                rel="noreferrer" class="app-store-link">Download on the App Store</a>
+                            <a href="privacy/osilate.html" class="privacy-link">View privacy policy</a>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
@@ -63,21 +95,27 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>Tindrels</h4>
-                    <p>We build things</p>
+                    <h4>About</h4>
+                    <p>Tindrels builds intentional software.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Contact</h4>
-                    <p>
-                        <a href="mailto:team@tindrels.com">team@tindrels.com</a>
-                    </p>
+                    <p><a href="mailto:team@tindrels.com">team@tindrels.com</a></p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Tindrels. All rights reserved.</p>
+                <p>&copy; 2025 Tindrels LLC. All rights reserved.</p>
             </div>
         </div>
     </footer>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script defer>
+        window.addEventListener('DOMContentLoaded', function () {
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        });
+    </script>
 </body>
 
 </html>
