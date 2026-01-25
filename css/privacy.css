@@ -43,7 +43,8 @@
     margin-bottom: 1rem;
 }
 
-.privacy-policy ul {
+.privacy-policy ul,
+.privacy-policy ol {
     margin-left: 1.3rem;
 }
 
