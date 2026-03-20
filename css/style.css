@@ -293,13 +293,13 @@ a {
 }
 
 .store-links-row .store-badge-link img {
-    height: 40px;
+    height: 44px;
     width: auto;
 }
 
 .store-links-row .store-badge-link img.play-store-badge {
-    height: 60px;
-    margin: -10px 0;
+    height: 66px;
+    margin: -11px 0;
 }
 
 .hero-store-links.store-links-row .store-badge-link img {
@@ -382,13 +382,13 @@ footer {
     }
 
     .store-links-row .store-badge-link img {
-        height: 36px;
+        height: 40px;
         width: auto;
     }
 
     .store-links-row .store-badge-link img.play-store-badge {
-        height: 54px;
-        margin: -9px 0;
+        height: 60px;
+        margin: -10px 0;
     }
 
     .hero-store-links.store-links-row .store-badge-link img {
