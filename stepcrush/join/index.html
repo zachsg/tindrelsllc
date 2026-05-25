@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StepCrush - Join Team Invite">
+    <title>Join my StepCrush Team</title>
+    <link rel="icon" type="image/svg+xml" href="../../icons/sprout.svg">
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        /* Custom tweaks to match Tindrels but tailored for this landing card */
+        .join-container {
+            min-height: calc(100vh - 160px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+        .join-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.05);
+        }
+        .app-badge {
+            width: 4.5rem;
+            height: 4.5rem;
+            border-radius: 1.25rem;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 1.5rem;
+        }
+        .app-badge svg {
+            width: 2.5rem;
+            height: 2.5rem;
+            stroke: currentColor;
+            stroke-width: 1.6;
+        }
+        .join-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--ink);
+        }
+        .join-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .code-container {
+            background: var(--page);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .code-container:hover {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+        .code-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 0.25rem;
+        }
+        .code-value {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: var(--ink);
+            font-family: monospace;
+        }
+        .copy-hint {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--ink);
+            color: var(--surface);
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .store-badge-link img {
+            height: 48px;
+            width: auto;
+        }
+        .store-badge-link img.play-store-badge {
+            height: 72px;
+            margin: -12px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container nav-inner">
+                <div class="logo">
+                    <a href="../../"><h1>Tindrels</h1></a>
+                </div>
+                <a class="nav-pill" href="mailto:team@tindrels.com">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="join-container">
+            <section class="join-card">
+                <div class="app-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-footprints"><path d="M4 16v-2.38C4 11.5 5.88 9.85 6 7.07l.09-1.76A1.39 1.39 0 0 1 7.5 4h0a1.38 1.38 0 0 1 1.3 1.06l1.2 4.79A2.72 2.72 0 0 1 9.77 12L9 14.12c-.29.77-.86 1.39-1.57 1.74L4 16Z"/><path d="M12 11.5V9c0-2.12 1.88-3.77 2-6.55l.09-1.76A1.39 1.39 0 0 1 15.5 0h0a1.38 1.38 0 0 1 1.3 1.06l1.2 4.79A2.72 2.72 0 0 1 17.77 8L17 10.12c-.29.77-.86 1.39-1.57 1.74L12 11.5Z"/><path d="M8 20v2"/><path d="M16 15v2"/><path d="M12 19v3"/></svg>
+                </div>
+                <h2 class="join-title">Join my StepCrush Team!</h2>
+                <p class="join-desc">A social step-counting companion that keeps your close circles moving.</p>
+
+                <div id="invite-box" style="display: none;">
+                    <div class="code-container" id="copy-btn">
+                        <div class="code-label">Team Invite Code</div>
+                        <div class="code-value" id="invite-code">------</div>
+                        <div class="copy-hint" id="copy-status">Tap to Copy Code</div>
+                    </div>
+                    <p class="join-desc" style="margin-top: -0.5rem; font-size: 0.85rem;">
+                        Copy the code above, download the app, and paste it when prompted!
+                    </p>
+                </div>
+
+                <div id="no-invite-box">
+                    <p class="join-desc" style="margin-bottom: 2rem;">
+                        Get moving with your friends and climb the leaderboard together!
+                    </p>
+                </div>
+
+                <div class="store-links-row" style="justify-content: center; margin-top: 1rem; gap: 1rem;">
+                    <a class="store-badge-link" href="https://apps.apple.com/us/app/osilate/id6745056964" target="_blank" rel="noreferrer">
+                        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store">
+                    </a>
+                    <a class="store-badge-link" href="https://play.google.com/store/apps/details?id=com.osilate.osilate" target="_blank" rel="noreferrer">
+                        <img class="play-store-badge" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play">
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="toast" id="toast">Code copied to clipboard!</div>
+
+    <footer>
+        <div class="container" style="text-align: center;">
+            <div class="footer-bottom" style="margin-top: 0;">
+                <p>&copy; 2025 Tindrels LLC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+
+            const inviteBox = document.getElementById('invite-box');
+            const noInviteBox = document.getElementById('no-invite-box');
+            const codeEl = document.getElementById('invite-code');
+            const copyBtn = document.getElementById('copy-btn');
+            const copyStatus = document.getElementById('copy-status');
+            const toast = document.getElementById('toast');
+
+            if (code && code.trim().length === 6) {
+                const cleanedCode = code.trim().toUpperCase();
+                codeEl.textContent = cleanedCode;
+                inviteBox.style.display = 'block';
+                noInviteBox.style.display = 'none';
+
+                // Try auto-copying on load (some browsers block this without interaction, but worth a try)
+                navigator.clipboard.writeText(cleanedCode).then(() => {
+                    showToast('Welcome! The invite code is copied to your clipboard!');
+                    copyStatus.textContent = 'Code Copied!';
+                }).catch(() => {
+                    // Fail silently, they'll copy on manual click
+                });
+
+                copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(cleanedCode).then(() => {
+                        showToast('Invite code copied!');
+                        copyStatus.textContent = 'Code Copied!';
+                        setTimeout(() => {
+                            copyStatus.textContent = 'Tap to Copy Code';
+                        }, 3000);
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        copyStatus.textContent = 'Failed to copy. Please copy manually.';
+                    });
+                });
+            } else {
+                inviteBox.style.display = 'none';
+                noInviteBox.style.display = 'block';
+            }
+
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.osilate.osilate",
+      "sha256_cert_fingerprints": [
+        "AE:0D:44:2B:BF:45:D3:0C:10:16:68:D9:90:58:FE:ED:3D:85:85:35:1D:5A:5E:0B:37:9F:A6:D5:2A:7E:60:78"
+      ]
+    }
+  }
+]
