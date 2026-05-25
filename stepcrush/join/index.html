@@ -199,7 +199,7 @@
                     showToast('Welcome! The invite code is copied to your clipboard!');
                     copyStatus.textContent = 'Code Copied!';
                 }).catch(() => {
-                    // Fail silently, they'll copy on manual click
+                    // Fail silently, they'll copy on manual click or when tapping download
                 });
 
                 copyBtn.addEventListener('click', () => {
@@ -212,6 +212,20 @@
                     }).catch(err => {
                         console.error('Failed to copy text: ', err);
                         copyStatus.textContent = 'Failed to copy. Please copy manually.';
+                    });
+                });
+
+                // Proactive Gesture Copy: Copy code to clipboard when they tap App Store / Google Play download buttons!
+                // (Bypasses all browser security restrictions because it's triggered by a direct user tap)
+                const storeLinks = document.querySelectorAll('.store-badge-link');
+                storeLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        navigator.clipboard.writeText(cleanedCode).then(() => {
+                            showToast('Invite code copied! Opening store...');
+                            copyStatus.textContent = 'Code Copied!';
+                        }).catch(err => {
+                            console.error('Failed to copy on download link click: ', err);
+                        });
                     });
                 });
             } else {
