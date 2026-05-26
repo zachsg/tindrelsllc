@@ -184,14 +184,30 @@
                 noInviteBox.style.display = 'none';
 
                 // Helper function to safely copy text to clipboard.
-                // Uses synchronous execCommand first to preserve the user-gesture
-                // context (Safari kills it across an await boundary), then falls
-                // back to the async Clipboard API for non-gesture contexts.
+                // Prioritizes the modern Clipboard API (which works perfectly in secure/HTTPS contexts
+                // when called immediately within a user gesture), and falls back to execCommand
+                // for non-secure (HTTP) contexts or older browsers.
                 function copyToClipboard(text) {
-                    // 1. Try synchronous execCommand (works reliably within a gesture)
+                    // 1. Try modern Clipboard API first (must be called immediately in user gesture)
+                    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+                        return navigator.clipboard.writeText(text)
+                            .then(() => true)
+                            .catch((err) => {
+                                console.warn('navigator.clipboard failed, trying execCommand fallback:', err);
+                                return tryExecCommandFallback(text);
+                            });
+                    }
+
+                    // 2. Fall back directly to execCommand if Clipboard API is not available (e.g. HTTP)
+                    return Promise.resolve(tryExecCommandFallback(text));
+                }
+
+                // Synchronous text-area fallback
+                function tryExecCommandFallback(text) {
                     try {
                         const textArea = document.createElement('textarea');
                         textArea.value = text;
+                        // Prevent scrolling and ensure element is invisible but selectable
                         textArea.style.position = 'fixed';
                         textArea.style.top = '0';
                         textArea.style.left = '0';
@@ -202,27 +218,33 @@
                         textArea.style.outline = 'none';
                         textArea.style.boxShadow = 'none';
                         textArea.style.background = 'transparent';
+                        
+                        // iOS/Safari selection helper
+                        textArea.contentEditable = true;
+                        textArea.readOnly = false;
+                        
                         document.body.appendChild(textArea);
-                        textArea.focus();
-                        textArea.select();
+                        
+                        // Handle iOS vs Desktop selection
+                        if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+                            const range = document.createRange();
+                            range.selectNodeContents(textArea);
+                            const selection = window.getSelection();
+                            selection.removeAllRanges();
+                            selection.addRange(range);
+                            textArea.setSelectionRange(0, 999999);
+                        } else {
+                            textArea.focus();
+                            textArea.select();
+                        }
+                        
                         const successful = document.execCommand('copy');
                         document.body.removeChild(textArea);
-                        if (successful) return Promise.resolve(true);
+                        return !!successful;
                     } catch (err) {
-                        console.error('execCommand copy failed:', err);
+                        console.error('execCommand fallback failed:', err);
+                        return false;
                     }
-
-                    // 2. Fall back to async Clipboard API (works in secure contexts)
-                    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-                        return navigator.clipboard.writeText(text)
-                            .then(() => true)
-                            .catch((err) => {
-                                console.error('navigator.clipboard failed:', err);
-                                return false;
-                            });
-                    }
-
-                    return Promise.resolve(false);
                 }
 
                 // Try auto-copying on load (will fail in most browsers without interaction, but worth a try)
