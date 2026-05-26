@@ -194,37 +194,80 @@
                 inviteBox.style.display = 'block';
                 noInviteBox.style.display = 'none';
 
-                // Try auto-copying on load (some browsers block this without interaction, but worth a try)
-                navigator.clipboard.writeText(cleanedCode).then(() => {
-                    showToast('Welcome! The invite code is copied to your clipboard!');
-                    copyStatus.textContent = 'Code Copied!';
-                }).catch(() => {
-                    // Fail silently, they'll copy on manual click or when tapping download
+                // Helper function to safely copy text to clipboard.
+                // Uses synchronous execCommand first to preserve the user-gesture
+                // context (Safari kills it across an await boundary), then falls
+                // back to the async Clipboard API for non-gesture contexts.
+                function copyToClipboard(text) {
+                    // 1. Try synchronous execCommand (works reliably within a gesture)
+                    try {
+                        const textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        textArea.style.position = 'fixed';
+                        textArea.style.top = '0';
+                        textArea.style.left = '0';
+                        textArea.style.width = '2em';
+                        textArea.style.height = '2em';
+                        textArea.style.padding = '0';
+                        textArea.style.border = 'none';
+                        textArea.style.outline = 'none';
+                        textArea.style.boxShadow = 'none';
+                        textArea.style.background = 'transparent';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        if (successful) return Promise.resolve(true);
+                    } catch (err) {
+                        console.error('execCommand copy failed:', err);
+                    }
+
+                    // 2. Fall back to async Clipboard API (works in secure contexts)
+                    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+                        return navigator.clipboard.writeText(text)
+                            .then(() => true)
+                            .catch((err) => {
+                                console.error('navigator.clipboard failed:', err);
+                                return false;
+                            });
+                    }
+
+                    return Promise.resolve(false);
+                }
+
+                // Try auto-copying on load (will fail in most browsers without interaction, but worth a try)
+                copyToClipboard(cleanedCode).then((success) => {
+                    if (success) {
+                        showToast('Welcome! The invite code is copied to your clipboard!');
+                        copyStatus.textContent = 'Code Copied!';
+                    }
                 });
 
                 copyBtn.addEventListener('click', () => {
-                    navigator.clipboard.writeText(cleanedCode).then(() => {
-                        showToast('Invite code copied!');
-                        copyStatus.textContent = 'Code Copied!';
-                        setTimeout(() => {
-                            copyStatus.textContent = 'Tap to Copy Code';
-                        }, 3000);
-                    }).catch(err => {
-                        console.error('Failed to copy text: ', err);
-                        copyStatus.textContent = 'Failed to copy. Please copy manually.';
+                    copyToClipboard(cleanedCode).then((success) => {
+                        if (success) {
+                            showToast('Invite code copied!');
+                            copyStatus.textContent = 'Code Copied!';
+                            setTimeout(() => {
+                                copyStatus.textContent = 'Tap to Copy Code';
+                            }, 3000);
+                        } else {
+                            copyStatus.textContent = 'Failed to copy. Please copy manually.';
+                        }
                     });
                 });
 
                 // Proactive Gesture Copy: Copy code to clipboard when they tap App Store / Google Play download buttons!
-                // (Bypasses all browser security restrictions because it's triggered by a direct user tap)
+                // (Bypasses browser security restrictions because it's triggered by a direct user tap)
                 const storeLinks = document.querySelectorAll('.store-badge-link');
                 storeLinks.forEach(link => {
                     link.addEventListener('click', () => {
-                        navigator.clipboard.writeText(cleanedCode).then(() => {
-                            showToast('Invite code copied! Opening store...');
-                            copyStatus.textContent = 'Code Copied!';
-                        }).catch(err => {
-                            console.error('Failed to copy on download link click: ', err);
+                        copyToClipboard(cleanedCode).then((success) => {
+                            if (success) {
+                                showToast('Invite code copied! Opening store...');
+                                copyStatus.textContent = 'Code Copied!';
+                            }
                         });
                     });
                 });
